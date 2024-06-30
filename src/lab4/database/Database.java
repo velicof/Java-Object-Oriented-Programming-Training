@@ -8,14 +8,24 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Database {
-    private List<Student> students = new ArrayList<>();
-    private List<Teacher> teachers = new ArrayList<>();
+    private final List<Student> students = new ArrayList<>();
+    private final List<Teacher> teachers = new ArrayList<>();
 
     // TODO: make it Singleton
+    public final static Database db = new Database();
+    public static Integer nrInstances = 0;
+    private Database(){
+
+    }
+    public static Database getDatabase(){
+        ++nrInstances;
+        return db;
+    }
+
 
     public static int getNumberOfInstances() {
         // TODO
-        return 0;
+        return nrInstances;
     }
 
     public void addTeachers(List<Teacher> teachers) {
@@ -27,32 +37,42 @@ public class Database {
     }
 
     public List<Teacher> findTeachersBySubject(String subject) {
-        // TODO
-        return null;
+        List<Teacher> newTeacher = new ArrayList<>();
+        for (Teacher tc : teachers){
+            if (tc.getSubjects().contains(subject)) {
+                newTeacher.add(tc);
+            }
+        }
+        return newTeacher;
     }
 
     public List<Student> findAllStudents() {
-        // TODO
-        return null;
+
+        return students;
     }
 
     public List<Teacher> findAllTeachers() {
-        // TODO
-        return null;
+
+        return teachers;
     }
 
     public List<Student> getStudentsBySubject(String subject) {
-        // TODO
-        return null;
+        List<Student> newStudents = new ArrayList<>();
+        for(Student si : students) {
+            if (si.getSubjects().containsKey(subject)) {
+                newStudents.add(si);
+            }
+        }
+        return newStudents;
     }
 
     public List<Student> getStudentsByAverageGrade() {
-        // TODO
-        return null;
+        students.sort(Comparator.comparingDouble(Student::averageGrade));
+        return students;
     }
 
     public List<Student> getStudentsByGradeForSubject(String subject) {
-        // TODO
-        return null;
+        students.sort(Comparator.comparingDouble(o -> o.getGradeForSubject(subject)));
+        return students;
     }
 }
